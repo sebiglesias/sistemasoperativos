@@ -3,7 +3,9 @@ package schedulingalgorithms;
 import processes.Process;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Created by sebi on 24/04/17.
@@ -16,7 +18,12 @@ public class FirstCFirstS extends SchedulingAlgBase {
 
     FirstCFirstS(int time){
         this.standardTime = time;
-        processQueue = (Queue<Process>) new ArrayList<Process>();
+        processQueue = new ConcurrentLinkedQueue<>();
+    }
+
+    @Override
+    public void addProcess(List<Process> p) {
+        processQueue.addAll(p);
     }
 
     @Override
