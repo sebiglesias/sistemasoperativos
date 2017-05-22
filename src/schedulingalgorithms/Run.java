@@ -7,7 +7,7 @@ import processes.Process;
  */
 public class Run {
     private Process p;
-    int time;
+    private int time;
 
     public Run(Process p, int time) {
         this.p = p;

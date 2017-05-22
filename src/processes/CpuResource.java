@@ -7,7 +7,7 @@ public class CpuResource implements Resource {
 
     private int time;
 
-    CpuResource(int time){
+    public CpuResource(int time){
         this.time = time;
     }
 
@@ -29,6 +29,12 @@ public class CpuResource implements Resource {
 
     @Override
     public void consume(int time) {
-        time -= time;
+        this.time -= time;
+        if (this.time<0)this.time=0;
     }
+
+    public String toString(){
+        return "CPU: " + this.time;
+    }
+
 }

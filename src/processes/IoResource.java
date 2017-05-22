@@ -31,4 +31,8 @@ public class IoResource implements Resource{
     public void consume(int time) {
         this.time -= time;
     }
+
+    public String toString(){
+        return "IO: " + this.time;
+    }
 }

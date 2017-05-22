@@ -1,9 +1,9 @@
 package schedulingalgorithms;
 
+import processes.CpuResource;
 import processes.Process;
+import processes.Resource;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -16,14 +16,9 @@ public class FirstCFirstS extends SchedulingAlgBase {
     private Queue<Process> processQueue;
 
 
-    FirstCFirstS(int time){
+    public FirstCFirstS(int time){
         this.standardTime = time;
         processQueue = new ConcurrentLinkedQueue<>();
-    }
-
-    @Override
-    public void addProcess(List<Process> p) {
-        processQueue.addAll(p);
     }
 
     @Override
@@ -33,18 +28,22 @@ public class FirstCFirstS extends SchedulingAlgBase {
 
     @Override
     public Run nextProcess() {
-        if (hasNext()){
-            Process p = processQueue.poll();
-
+        Process process = processQueue.poll();
+        if (process != null) {
+            Resource resource = process.getResources().peek();
+            if (resource instanceof CpuResource){
+                return new Run(process, resource.getRemainingTime());
+            }
+            return null;
         }
-    }
-
-    @Override
-    public boolean hasNextProcess() {
-        return hasNext();
+        return null;
     }
 
     private boolean hasNext(){
         return processQueue.peek()!=null;
+    }
+
+    public String toString(){
+        return "First Come - First Served";
     }
 }

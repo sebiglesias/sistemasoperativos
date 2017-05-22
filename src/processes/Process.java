@@ -1,69 +1,139 @@
 package processes;
 
-import events.State;
-
-import java.util.Queue;
+import java.util.*;
 
 /**
  * Created by sebi on 24/04/17.
  */
 public class Process {
 
+    private int id;
     private String name;
     private int priority;
     private int arrivalTime;
     private Queue<Resource> resources;
+    private List<Interval> intervals;
 
-    public Process(String name, int priority, int arrivalTime, Queue<Resource> resources) {
+    public Process(int id, String name) {
+        this.id = id;
         this.name = name;
-        this.priority = priority;
-        this.arrivalTime = arrivalTime;
-        this.resources = resources;
+        resources =  new LinkedList<>();
+        intervals = new ArrayList<>();
     }
 
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
-
-    public void setArrivalTime(int arrivalTime) {
-        this.arrivalTime = arrivalTime;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getPriority() {
-        return priority;
-    }
-
-    public int getArrivalTime() {
-        return arrivalTime;
-    }
 
     public Queue<Resource> getResources() {
         return resources;
     }
 
-    public boolean hasNextResource(){
-        return !resources.isEmpty();
+    public boolean nextIsIO() {
+        return resources.peek() instanceof IoResource;
     }
 
-    public boolean isLocked(){
-        return resources.peek().isIO();
+    public boolean hasLeft() {
+        return resources.size() == 0;
     }
 
-    public boolean consumeResource(int time){
-        if(resources.isEmpty())return false;
-        if (resources.peek().getRemainingTime()-time <=0){
-            final int remainingTime = resources.poll().getRemainingTime();
-            return consumeResource(time - remainingTime);
-        }
-        resources.peek().consume(resources.peek().getRemainingTime());
-        return true;
+    public boolean nextIsCPU() {
+        return resources.peek() instanceof CpuResource;
     }
 
-    public State state() {
-        return ;
+    public Process priority(int priority) {
+        this.priority = priority;
+        return this;
     }
+
+    public Process arrivalTime(int arrivalTime) {
+        this.arrivalTime = arrivalTime;
+        return this;
+    }
+
+    public Process resources(Resource... resources) {
+        this.resources.addAll(Arrays.asList(resources));
+        return this;
+    }
+
+    public void addInterval(int start, int end) {
+        intervals.add(Interval.interval(start, end));
+    }
+
+    @Override
+    public String toString() {
+        return "Process{" +
+                ", priority=" + priority +
+                ", arrivalTime=" + arrivalTime +
+                ", resources=" + resources +
+                ", intervals=" + intervals +
+                '}';
+    }
+
+
+    public int getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public List<Interval> getIntervals() {
+        return intervals;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+//    public void priority(int priority) {
+//        this.priority = priority;
+//    }
+//
+//    public void arrivalTime(int arrivalTime) {
+//        this.arrivalTime = arrivalTime;
+//    }
+//
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public int getPriority() {
+//        return priority;
+//    }
+//
+//    public int getArrivalTime() {
+//        return arrivalTime;
+//    }
+//
+//    public void resources(Resource... resources){
+//        this.queue.addAll(Arrays.asList(resources));
+//    }
+//
+//    public Queue<Resource> getQueue() {
+//        return queue;
+//    }
+//
+//    public boolean hasNextResource(){
+//        return !queue.isEmpty();
+//    }
+//
+//    public boolean isLocked(){
+//        if (queue.isEmpty())return false;
+//        return queue.peek().isIO();
+//    }
+//
+//    public boolean consumeResource(int time){
+//        if(queue.isEmpty() || time ==0)return false;
+//
+//        if (queue.peek().getRemainingTime()-time <0){
+//            final int remainingTime = queue.poll().getRemainingTime();
+//            return consumeResource(time - remainingTime);
+//        }
+//        if (queue.peek().getRemainingTime() == 0){
+//            queue.poll();
+//            return true;
+//        }
+//
+//        queue.peek().consume(time);
+//        return true;
+//    }
 }
