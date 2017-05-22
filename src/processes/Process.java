@@ -1,5 +1,7 @@
 package processes;
 
+import events.State;
+
 import java.util.Queue;
 
 /**
@@ -59,5 +61,9 @@ public class Process {
         }
         resources.peek().consume(resources.peek().getRemainingTime());
         return true;
+    }
+
+    public State state() {
+        return ;
     }
 }

@@ -36,6 +36,7 @@ public class Scheduler {
                     time += run.getTime();
                     consume(run);
                     susbtractTimeFromBlocked(run.getTime(), blocked);
+
                 }
             }else{
                 susbtractTimeFromBlocked(1,blocked); //todo crear events de los procesos que se corrieron

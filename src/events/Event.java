@@ -12,4 +12,10 @@ public class Event {
     private int endTime;
     private State state;
 
+    public Event(Process process, int startTime, int endTime) {
+        this.process = process;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.state = process.state();
+    }
 }
